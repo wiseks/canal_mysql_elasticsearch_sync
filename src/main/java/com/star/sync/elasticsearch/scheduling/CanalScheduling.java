@@ -47,6 +47,7 @@ public class CanalScheduling implements Runnable, ApplicationContextAware {
                     entries.forEach(entry -> {
                         if (entry.getEntryType() == EntryType.ROWDATA) {
                             publishCanalEvent(entry);
+                            System.out.println("entry:"+entry);
                         }
                     });
                 }

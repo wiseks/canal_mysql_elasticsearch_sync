@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CommonTest {
 
-    @Test
+    //@Test
     public void testCommon() throws Exception {
         System.out.println(DateTime.parse("2017-09-01 16:21:17", DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate());
 //        long i = 7989501;
@@ -30,7 +30,7 @@ public class CommonTest {
         }
     }
 
-    @Test
+    //@Test
     public void testThread() throws Exception {
         ExecutorService executorService = new ThreadPoolExecutor(10, 10, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), new ThreadFactory() {
             @Override
