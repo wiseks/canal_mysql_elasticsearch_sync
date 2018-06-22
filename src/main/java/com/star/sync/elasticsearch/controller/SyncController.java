@@ -1,17 +1,20 @@
 package com.star.sync.elasticsearch.controller;
 
-import com.star.sync.elasticsearch.model.request.SyncByTableRequest;
-import com.star.sync.elasticsearch.model.response.Response;
-import com.star.sync.elasticsearch.service.SyncService;
-import com.star.sync.elasticsearch.util.JsonUtil;
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.Resource;
+import com.star.sync.elasticsearch.model.request.SyncByTableRequest;
+import com.star.sync.elasticsearch.model.response.Response;
+import com.star.sync.elasticsearch.rabbitmq.Sender;
+import com.star.sync.elasticsearch.service.SyncService;
+import com.star.sync.elasticsearch.util.JsonUtil;
 
 /**
  * @author <a href="mailto:wangchao.star@gmail.com">wangchao</a>
@@ -25,6 +28,9 @@ public class SyncController {
 
     @Resource
     private SyncService syncService;
+    
+    @Autowired
+    private Sender sender;
 
     /**
      * 通过库名和表名全量同步数据
@@ -38,5 +44,11 @@ public class SyncController {
         String response = Response.success(syncService.syncByTable(request)).toString();
         logger.debug("response_info: " + JsonUtil.toJson(request));
         return response;
+    }
+    
+    @RequestMapping("/send")
+    public String send(String msg){
+    	sender.send(msg);
+    	return msg;
     }
 }

@@ -27,6 +27,7 @@
 
 		<disruptor.version>3.3.4</disruptor.version>
 		<amqp-client.version>3.6.5</amqp-client.version>
+		<spring-amqp.version>1.7.4.RELEASE</spring-amqp.version>
 	</properties>
 
 	<dependencies>
@@ -48,6 +49,10 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
 
 		<dependency>
 			<groupId>org.elasticsearch.client</groupId>
@@ -99,6 +104,12 @@
 			<artifactId>amqp-client</artifactId>
 			<version>${amqp-client.version}</version>
 		</dependency>
+		
+		<dependency>
+                <groupId>org.springframework.amqp</groupId>
+                <artifactId>spring-amqp</artifactId>
+                <version>${spring-amqp.version}</version>
+            </dependency>
 
 	</dependencies>
 

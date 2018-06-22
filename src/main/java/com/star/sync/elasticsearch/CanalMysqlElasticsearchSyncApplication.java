@@ -1,16 +1,10 @@
 package com.star.sync.elasticsearch;
 
-import java.net.InetSocketAddress;
-
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import com.alibaba.otter.canal.client.CanalConnector;
-import com.alibaba.otter.canal.client.CanalConnectors;
-import com.alibaba.otter.canal.protocol.Message;
 
 /**
  * @author <a href="mailto:wangchao.star@gmail.com">wangchao</a>
