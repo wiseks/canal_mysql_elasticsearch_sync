@@ -23,14 +23,14 @@ import java.util.Map;
  * @version 1.0
  * @since 2017-08-28 14:40:00
  */
-public abstract class AbstractCanalListener<EVENT extends CanalEvent> implements ApplicationListener<EVENT> {
+public abstract class AbstractCanalListener<T extends CanalEvent> implements ApplicationListener<T> {
     private static final Logger logger = LoggerFactory.getLogger(AbstractCanalListener.class);
 
     @Resource
     private MappingService mappingService;
 
     @Override
-    public void onApplicationEvent(EVENT event) {
+    public void onApplicationEvent(T event) {
         Entry entry = event.getEntry();
         String database = entry.getHeader().getSchemaName();
         String table = entry.getHeader().getTableName();

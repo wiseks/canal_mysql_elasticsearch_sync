@@ -5,12 +5,17 @@ import com.alibaba.otter.canal.protocol.CanalEntry.Entry;
 import com.alibaba.otter.canal.protocol.CanalEntry.EntryType;
 import com.alibaba.otter.canal.protocol.CanalEntry.EventType;
 import com.alibaba.otter.canal.protocol.Message;
+import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.dsl.Disruptor;
+import com.star.sync.elasticsearch.disruptor.event.DisruptorEvent;
+import com.star.sync.elasticsearch.disruptor.event.DisruptorEventTranslator;
 import com.star.sync.elasticsearch.event.DeleteCanalEvent;
 import com.star.sync.elasticsearch.event.InsertCanalEvent;
 import com.star.sync.elasticsearch.event.UpdateCanalEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -31,6 +36,9 @@ public class CanalScheduling implements Runnable, ApplicationContextAware {
 
     @Resource
     private CanalConnector canalConnector;
+    
+    @Autowired
+    private Disruptor<DisruptorEvent> disruptor;
 
     @Scheduled(fixedDelay = 100)
     @Override
@@ -46,7 +54,8 @@ public class CanalScheduling implements Runnable, ApplicationContextAware {
                 if (batchId != -1 && entries.size() > 0) {
                     entries.forEach(entry -> {
                         if (entry.getEntryType() == EntryType.ROWDATA) {
-                            publishCanalEvent(entry);
+//                            publishCanalEvent(entry);
+                        	publishEvent(entry);
                             System.out.println("entry:"+entry);
                         }
                     });
@@ -76,6 +85,11 @@ public class CanalScheduling implements Runnable, ApplicationContextAware {
             default:
                 break;
         }
+    }
+    
+    private void publishEvent(Entry entry){
+    	final RingBuffer<DisruptorEvent> ringBuffer = disruptor.getRingBuffer();
+        ringBuffer.publishEvent(new DisruptorEventTranslator(), entry);
     }
 
     @Override
